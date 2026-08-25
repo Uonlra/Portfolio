@@ -18,9 +18,11 @@ export type Skill = {
   evidenceProjectIds: string[];
 };
 
-export type ImageAsset = {
+export type MediaAsset = {
   id: string;
+  type: 'image' | 'video';
   src: string;
+  poster?: string;
   alt: string;
   caption?: string;
   group?: string;
@@ -48,8 +50,8 @@ export type QualityEvidence = {
 };
 
 export type ProjectEvidence = {
-  heroImage: ImageAsset;
-  gallery: ImageAsset[];
+  heroImage: MediaAsset;
+  gallery: MediaAsset[];
   architectureDiagram?: ArchitectureDiagram;
   routeCount: number;
   moduleCount: number;
