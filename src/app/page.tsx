@@ -1,60 +1,10 @@
 import Link from 'next/link';
 
+import { PortfolioGridCanvas } from '@/components/portfolio/portfolio-grid-canvas';
+import { PortfolioStream } from '@/components/portfolio/portfolio-stream';
 import portfolioData from '@/data/portfolio.json';
 import { getAllStackNames, getFeaturedProject, getPublishedProjects } from '@/lib/portfolio';
 import type { Project } from '@/types/portfolio';
-
-const categoryLabels = {
-  workbench: '工作台',
-  community: '社区产品',
-  media: '媒体产品',
-  other: '其他',
-} as const;
-
-function ProjectCard({ project }: { project: Project }) {
-  return (
-    <article className="flex h-full flex-col border border-border bg-card p-6 transition-colors hover:border-foreground/40">
-      <div className="mb-8 flex items-start justify-between gap-4">
-        <span className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-          {categoryLabels[project.category]}
-        </span>
-        <span className="text-xs text-muted-foreground">{project.timeRange}</span>
-      </div>
-
-      <div className="flex flex-1 flex-col">
-        <h3 className="text-2xl font-semibold tracking-tight">{project.title}</h3>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{project.summary}</p>
-
-        <ul className="mt-6 space-y-2 text-sm text-foreground/80">
-          {project.outcomes.slice(0, 2).map((outcome) => (
-            <li key={outcome} className="flex gap-2">
-              <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 bg-foreground" />
-              <span>{outcome}</span>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-8 flex flex-wrap gap-2">
-          {project.stack.slice(0, 5).map((technology) => (
-            <span key={technology} className="border border-border px-2.5 py-1 text-xs text-muted-foreground">
-              {technology}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <Link
-        href={`/projects/${project.slug}`}
-        className="mt-8 inline-flex items-center text-sm font-medium underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground"
-      >
-        阅读项目案例
-        <span aria-hidden="true" className="ml-2">
-          →
-        </span>
-      </Link>
-    </article>
-  );
-}
 
 export default function Home() {
   const projects = portfolioData.projects as Project[];
@@ -71,10 +21,9 @@ export default function Home() {
     );
   }
 
-  const otherProjects = publishedProjects.filter((project) => project.id !== featuredProject.id);
-
   return (
-    <main className="mx-auto w-full max-w-6xl px-6 py-6 sm:px-8 lg:px-10">
+    <main className="relative isolate mx-auto w-full max-w-6xl px-6 py-6 sm:px-8 lg:px-10">
+      <PortfolioGridCanvas />
       <header className="flex items-center justify-between border-b border-border py-5">
         <Link href="/" className="text-sm font-semibold tracking-tight">
           Jiang Junfeng
@@ -148,40 +97,8 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="mt-10 border border-border bg-muted/30 p-5 sm:p-8">
-          <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-end">
-            <div>
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                  Featured project
-                </span>
-                <span className="border border-foreground px-2 py-1 text-xs">{featuredProject.title}</span>
-              </div>
-              <h3 className="mt-6 text-4xl font-semibold tracking-tight">{featuredProject.title}</h3>
-              <p className="mt-4 max-w-xl leading-7 text-muted-foreground">{featuredProject.summary}</p>
-            </div>
-
-            <div className="border-t border-border pt-5 lg:border-l lg:border-t-0 lg:pl-6">
-              <p className="text-sm font-medium">核心证明</p>
-              <ul className="mt-4 space-y-3 text-sm leading-6 text-muted-foreground">
-                {featuredProject.outcomes.slice(0, 3).map((outcome) => (
-                  <li key={outcome}>{outcome}</li>
-                ))}
-              </ul>
-              <Link
-                href={`/projects/${featuredProject.slug}`}
-                className="mt-6 inline-flex text-sm font-medium underline underline-offset-4"
-              >
-                阅读完整案例
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
-          {otherProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
+        <div className="mt-10">
+          <PortfolioStream projects={publishedProjects} />
         </div>
       </section>
 
