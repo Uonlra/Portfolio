@@ -42,13 +42,13 @@
       {
         "id": "profile-github",
         "label": "GitHub",
-        "href": "https://github.com/example",
+        "href": "https://github.com/Uonlra",
         "type": "github"
       },
       {
         "id": "profile-website",
         "label": "个人网站",
-        "href": "https://example.com",
+        "href": "https://www.uon1ra.top/",
         "type": "other"
       }
     ]
